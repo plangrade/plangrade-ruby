@@ -1,5 +1,5 @@
 module Plangrade
-  class Resources
+  module Resources
     class Participants < Plangrade::Resources::Base
 
       def self.create(company_id, first_name, last_name, street1, street2, city, state, zip, dob, ssn, email, phone, employee_id)

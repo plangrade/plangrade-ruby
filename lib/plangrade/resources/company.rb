@@ -1,5 +1,5 @@
 module Plangrade
-  class Resources
+  module Resources
     class Company < Plangrade::Resources::Base
 
       def self.create(ein, name)

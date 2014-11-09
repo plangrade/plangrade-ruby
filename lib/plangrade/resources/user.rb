@@ -1,5 +1,5 @@
 module Plangrade
-  class Resources
+  module Resources
     class User < Plangrade::Resources::Base
 
       def self.current
