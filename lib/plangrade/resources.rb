@@ -1,0 +1,5 @@
+require 'plangrade/resources/identity_map'
+require 'plangrade/resources/base'
+require 'plangrade/resources/user'
+require 'plangrade/resources/company'
+require 'plangrade/resources/participant'
