@@ -3,8 +3,8 @@ require 'plangrade/http_adapter'
 module Plangrade
   module Configurable
 
-    ENDPOINT = 'https://plangrade.com' unless defined? ENDPOINT
-    HTTP_ADAPTER = Plangrade::HttpAdapter unless defined? HTTP_CONNECTION
+    ENDPOINT ||= 'https://plangrade.com'
+    HTTP_ADAPTER ||= Plangrade::HttpAdapter unless defined? HTTP_CONNECTION
 
     attr_accessor :client_id, :client_secret, :access_token, :site_url,
     :connection_options, :default_headers, :http_adapter
