@@ -14,7 +14,7 @@ module Plangrade
       end
 
       def current_user
-      	get('/api/v1/me')
+      	get('/api/v1/me').body
       end
     end
   end
