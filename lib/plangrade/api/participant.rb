@@ -13,6 +13,10 @@ module Plangrade
         delete("/api/v1/participants/#{id}", opts)
       end
 
+      def archive_participant(id)
+        get("api/v1/participants/archive?participant_id=#{id}").body
+      end
+
       def get_participant(id)
         get("/api/v1/participants/#{id}").body[:participant]
       end
