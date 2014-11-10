@@ -14,11 +14,11 @@ module Plangrade
       end
 
       def get_company(id)
-        get("/api/v1/companies/#{id}")
+        get("/api/v1/companies/#{id}").body
       end
 
       def all_companies(opts={})
-        get("/api/v1/companies", opts)
+        get("/api/v1/companies", opts).body
       end
     end
   end
