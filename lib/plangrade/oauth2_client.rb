@@ -65,7 +65,7 @@ module Plangrade
     #      :redirect_uri => 'http://localhost:3000/auth/plangrade/callback',
     #    })
     #
-    # POST /oauth2/access_token HTTP/1.1
+    # POST /oauth/token HTTP/1.1
     # Host: www.plangrade.com
     # Content-Type: application/x-www-form-urlencoded
 
@@ -74,6 +74,30 @@ module Plangrade
     def access_token_from_authorization_code(code, opts={})
       opts[:authenticate] ||= :body
       authorization_code.get_token(code, opts)
+    end
+
+    # Makes a request to Plangrade server that will swap your refresh token for an access
+    # token and new refresh token
+    #
+    # @see http://docs.plangrade.com/#refresh-authorization
+    #
+    # @opts [Hash] may include scope and other parameters
+    #
+    # >> client = PlangradeClient.new(config)
+    # >> client.refresh!('G3Y6jU3a', {
+    #      :scope => 'abc, xyz',
+    #    })
+    #
+    # POST /oauth/token HTTP/1.1
+    # Host: www.plangrade.com
+    # Content-Type: application/x-www-form-urlencoded
+
+    #  client_id={client_id}&refresh_token=G3Y6jU3a&grant_type=refresh_token&
+    #  client_secret={client_secret}
+    def refresh!(ref_token, opts={})
+      opts[:authenticate] ||= :body
+      token = refresh_token.get_token(ref_token, opts)
+      return token
     end
   end
 end
