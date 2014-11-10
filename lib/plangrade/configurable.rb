@@ -21,7 +21,7 @@ module Plangrade
         :connection_options => { :max_redirects => 5, :verify_ssl => true },
         :default_headers    => {
           'Accept'     => 'application/json',
-          'User-Agent' => "Plangrade Ruby Gem #{Plangrade::Ruby::Version}"
+          'User-Agent' => "Plangrade Ruby Gem #{Plangrade::Ruby::VERSION}"
         }
       }
     end
