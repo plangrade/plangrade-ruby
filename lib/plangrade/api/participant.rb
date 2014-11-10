@@ -14,11 +14,11 @@ module Plangrade
       end
 
       def get_participant(id)
-        get("/api/v1/participants/#{id}").body
+        get("/api/v1/participants/#{id}").body[:participant]
       end
 
       def all_participants(opts={})
-        get("/api/v1/participants", opts).body
+        get("/api/v1/participants", opts).body[:participants]
       end
     end
   end
