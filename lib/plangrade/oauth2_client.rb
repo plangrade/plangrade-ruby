@@ -72,7 +72,6 @@ module Plangrade
     #  client_id={client_id}&code=G3Y6jU3a&grant_type=authorization_code&
     #  redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fplangrade%2Fcallback&client_secret={client_secret}
     def access_token_from_authorization_code(code, opts={})
-      opts[:authenticate] ||= :body
       authorization_code.get_token(code, opts)
     end
 
