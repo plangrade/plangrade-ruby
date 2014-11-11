@@ -24,24 +24,6 @@ module Plangrade
     # @opts [Hash] additional parameters to be include in URL eg. scope, state, etc
     #
     # >> client = Plangrade::OAuth2Client.new('ETSIGVSxmgZitijWZr0G6w', '4bJZY38TCBB9q8IpkeualA2lZsPhOSclkkSKw3RXuE')
-    # >> client.webclient_authorization_url({
-    #      :redirect_uri => 'http://localhost:3000/auth/plangrade/callback',
-    #    })
-    # >> https://plangrade.com/oauth/authorize/?client_id={client_id}&
-    #    redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2F%2Fplangrade%2Fcallback&response_type=token
-    #
-    def webclient_authorization_url(opts={})
-      implicit.token_url(opts)
-    end
-
-    # Generates the Plangrade URL that the user will be redirected to in order to
-    # authorize your application
-    #
-    # @see http://docs.plangrade.com/#request-authorization
-    #
-    # @opts [Hash] additional parameters to be include in URL eg. scope, state, etc
-    #
-    # >> client = Plangrade::OAuth2Client.new('ETSIGVSxmgZitijWZr0G6w', '4bJZY38TCBB9q8IpkeualA2lZsPhOSclkkSKw3RXuE')
     # >> client.webserver_authorization_url({
     #      :redirect_uri => 'http://localhost:3000/auth/plangrade/callback',
     #    })
@@ -61,7 +43,7 @@ module Plangrade
     # @opts [Hash] may include redirect uri and other query parameters
     #
     # >> client = PlangradeClient.new(config)
-    # >> client.access_token_from_authorization_code('G3Y6jU3a', {
+    # >> client.exchange_auth_code_for_token({
     #      :redirect_uri => 'http://localhost:3000/auth/plangrade/callback',
     #    })
     #
@@ -71,7 +53,12 @@ module Plangrade
 
     #  client_id={client_id}&code=G3Y6jU3a&grant_type=authorization_code&
     #  redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fplangrade%2Fcallback&client_secret={client_secret}
-    def access_token_from_authorization_code(code, opts={})
+    def exchange_auth_code_for_token(opts={})
+      unless (opts[:params] && opts[:params][:code])
+        raise ArgumentError.new("You must include an authorization code as a parameter")
+      end
+      opts[:authenticate] ||= :body
+      code = opts[:params].delete(:code)
       authorization_code.get_token(code, opts)
     end
 
@@ -83,8 +70,8 @@ module Plangrade
     # @opts [Hash] may include scope and other parameters
     #
     # >> client = PlangradeClient.new(config)
-    # >> client.refresh!('G3Y6jU3a', {
-    #      :scope => 'abc, xyz',
+    # >> client.refresh_access_token({
+    #      :refresh_token => 'asdfsadgrwerwet234523sdf',
     #    })
     #
     # POST /oauth/token HTTP/1.1
@@ -93,10 +80,13 @@ module Plangrade
 
     #  client_id={client_id}&refresh_token=G3Y6jU3a&grant_type=refresh_token&
     #  client_secret={client_secret}
-    def refresh!(ref_token, opts={})
-      opts[:authenticate] ||= :body
-      token = refresh_token.get_token(ref_token, opts)
-      return token
+    def refresh_access_token(opts={})
+      unless (opts[:params] && opts[:params][:refresh_token])
+        raise ArgumentError.new("You must provide a refresh_token as a parameter")
+      end
+      opts[:authenticate] = :body
+      token = opts[:params].delete(:refresh_token)
+      refresh_token.get_token(token, opts)
     end
   end
 end
