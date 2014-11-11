@@ -6,7 +6,7 @@ module Plangrade
       end
 
       def update_participant(id, opts={})
-        put("/api/v1/participants/#{id}", opts)
+        put("/api/v1/participants/#{id}", opts).body[:participant]
       end
 
       def delete_participant(id)
@@ -14,7 +14,7 @@ module Plangrade
       end
 
       def archive_participant(id)
-        get("api/v1/participants/archive?participant_id=#{id}").body
+        get("api/v1/participants/archive?participant_id=#{id}")
       end
 
       def get_participant(id)

@@ -6,7 +6,7 @@ module Plangrade
       end
 
       def update_company(id, opts={})
-        put("/api/v1/companies/#{id}", opts)
+        put("/api/v1/companies/#{id}", opts).body[:company]
       end
 
       def delete_company(id)
