@@ -7,9 +7,7 @@ module Plangrade
                                                 :zip => zip, :dob => dob, :ssn => ssn, :email => email, :phone => phone, :employee_id => employee_id)
         return nil unless result.created?
         id = result.headers[:location].split('/').last.to_i
-        second_result = api_handler.get_participant(id)
-        return nil unless result.success?
-        new(second_result.body[:participant])
+        new(:id => id)
       end
 
       attr_accessor_deffered :company_id, :employee_id, :first_name, :last_name, :street1, :street2, :city, :state, :zip, :dob, :email, :phone
@@ -20,8 +18,8 @@ module Plangrade
         new(result.body[:participant])
       end
 
-      def self.all(company_id, params)
-        api_handler.all_participants(:company_id => company_id, params)
+      def self.all(params)
+        api_handler.all_participants(params)
         return nil unless result.success?
         new(result.body[:participants])
       end

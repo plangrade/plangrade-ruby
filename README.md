@@ -251,30 +251,30 @@ user.delete!
 **Companies**
 
 ```ruby
-company1 = Plangrade::Resources::Company.create(company_ein_here, company_name_here)
-company2 = Plangrade::Resources::Company.get(id)
+company_id = Plangrade::Resources::Company.create(company_ein_here, company_name_here)
 companies = Plangrade::Resources::Company.all
-company2.name
-company2.ein
-company2.grade
-company2.update!(:name => "plangrade, llc")
-company2.delete!
+company = Plangrade::Resources::Company.get(company_id)
+company.name
+company.ein
+company.grade
+company.update!(:name => "plangrade, llc")
+company.delete!
 ```
 
 **Patricipants**
 ```ruby
-participant1 = Plangrade::Resources::Participant.create(company_id, first_name, last_name, 
-														street1, street2, city, state, zip, 
-														dob, ssn, email, phone, employee_id)
-participant2 = Plangrade::Resources::Participant.get(id)
 participants = Plangrade::Resources::Participant.all
-participant2.first_name
-participant2.last_name
-participant2.company_id
+participant_id = Plangrade::Resources::Participant.create(company_id, first_name, last_name, 
+														  street1, street2, city, state, zip, 
+														  dob, ssn, email, phone, employee_id)
+participant = Plangrade::Resources::Participant.get(participant_id)
+participant.first_name
+participant.last_name
+participant.company_id
 ...
-participant2.update!(:first_name => "Johnny")
-participant2.archive!
-participant2.delete!
+participant.update!(:first_name => "Johnny")
+participant.archive!
+participant.delete!
 ```
 
 ## Supported Ruby Versions
