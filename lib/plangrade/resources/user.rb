@@ -2,8 +2,8 @@ module Plangrade
   module Resources
     class User < Plangrade::Resources::Base
 
-      def self.current
-        result = api_handler.current_resource_owner
+      def self.current_user
+        result = api_handler.current_user
         return nil unless result.success?
         new(result.body)
       end
@@ -15,7 +15,7 @@ module Plangrade
         new(:id => id)
       end
 
-      attr_accessor_deffered :id, :email, :name
+      attr_accessor_deffered :email, :name
 
       def update!(params)
         api_handler.update_user(@id, params)

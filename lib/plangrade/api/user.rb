@@ -6,15 +6,15 @@ module Plangrade
       end
 
       def update_user(id, opts={})
-        put("/api/v1/users/#{id}", opts).body[:user]
+        put("/api/v1/users/#{id}", opts)
       end
 
       def delete_user(id)
-        delete("/api/v1/users/#{id}", opts)
+        delete("/api/v1/users/#{id}")
       end
 
       def current_user
-      	get('/api/v1/me').body
+      	get('/api/v1/me')
       end
     end
   end

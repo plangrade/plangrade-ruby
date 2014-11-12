@@ -1,6 +1,6 @@
 module Plangrade
   module Resources
-    class Participants < Plangrade::Resources::Base
+    class Participant < Plangrade::Resources::Base
 
       def self.create(company_id, first_name, last_name, street1, street2, city, state, zip, dob, ssn, email, phone, employee_id)
 
@@ -13,7 +13,7 @@ module Plangrade
         new(:id => id)
       end
 
-      attr_accessor_deffered :id, :company_id, :employee_id, :first_name, :last_name, :street1, :street2, :city, :state, :zip,
+      attr_accessor_deffered :company_id, :employee_id, :first_name, :last_name, :street1, :street2, :city, :state, :zip,
       :dob, :ssn, :email, :phone
 
       def update!(params)

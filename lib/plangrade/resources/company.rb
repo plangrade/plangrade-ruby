@@ -9,7 +9,7 @@ module Plangrade
         new(:id => id)
       end
 
-      attr_accessor_deffered :id, :name, :ein, :grade
+      attr_accessor_deffered :name, :ein, :grade
 
       def update!(params)
         api_handler.update_company(@id, params)

@@ -44,6 +44,7 @@ module Plangrade
     #
     # >> client = PlangradeClient.new(config)
     # >> client.exchange_auth_code_for_token({
+    #      :code => '123456789'
     #      :redirect_uri => 'http://localhost:3000/auth/plangrade/callback',
     #    })
     #

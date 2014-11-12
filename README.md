@@ -3,12 +3,18 @@
 [![Code Climate](https://codeclimate.com/github/topherreynoso/plangrade-ruby/badges/gpa.svg)](https://codeclimate.com/github/topherreynoso/plangrade-ruby)
 
 Ruby wrapper for the plangrade API.
-Supports OAuth 2.0 authentication, including `refresh_token`. Read the [plangrade docs](https://docs.plangrade.com/#authentication) for more details. Additionally, this may be used in conjunction with [omniauth-plangrade](https://github.com/topherreynoso/omniauth-plangrade) in order to facilitate authentication and obtaining a valid `access_token` and `refresh_token` pair for use with this gem to access plangrade API endpoints.
+
+Supports OAuth 2.0 authentication, including `refresh_token`. Read the [plangrade docs](https://docs.plangrade.com/#authentication) for more details. 
+
+Additionally, this may be used in conjunction with [omniauth-plangrade](https://github.com/topherreynoso/omniauth-plangrade) in order to facilitate authentication and obtaining a valid `access_token` and `refresh_token` pair for use with this gem to access plangrade API endpoints.
+
+See the [plangrade-ruby-client](https://github.com/topherreynoso/plangrade-ruby-client) example for implementation of both omniauth-plangrade and plangrade-ruby.
+
 This README provides only a basic overview of how to use this gem. For more information about the API endpoints, look at the [plangrade docs](https://docs.plangrade.com/#authentication).
 
 ## Installing
 
-Add oauth2 and this line to your application's Gemfile:
+Add this line to your application's Gemfile:
 
     gem 'plangrade-ruby'
 
@@ -22,87 +28,218 @@ The plangrade API requires authentication for access to certain endpoints. Below
 
 ### Register your application
 
-Setup a plangrade client application at the [plangrade developer site](https://plangrade.com/oauth/applications). 
+Setup a plangrade client application at the [plangrade developer site](https://plangrade.com/oauth/applications).
 
-## Contributing
+### Using omniauth-plangrade to obtain an access token
 
-1. Fork it ( https://github.com/[my-github-username]/plangrade-ruby/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
-
-
-
-plangrade OAuth2 strategy for OmniAuth.  
-Supports the OAuth 2.0 server-side and client-side flows. Read the plangrade docs for more details: [docs.plangrade.com](https://docs.plangrade.com/#authentication). Additionally, this may be used in conjunction with [plangrade-ruby](https://github.com/topherreynoso/plangrade-ruby) in order to refresh tokens and access plangrade API endpoints.
-
-## Installing
-
-Add omniauth-oauth2 and this line to your application's Gemfile:
-
-    gem 'omniauth-plangrade'
-
-Then execute:
-
-    $ bundle install
-
-## Usage
-
-`OmniAuth::Strategies::Plangrade` is simply a Rack middleware. Read the OmniAuth docs for detailed instructions: [https://github.com/intridea/omniauth](https://github.com/intridea/omniauth).
-
-Here's a quick example, adding the middleware to a Rails app in `config/initializers/omniauth.rb`:
+You can use [omniauth-plangrade](https://github.com/topherreynoso/omniauth-plangrade) to obtain a valid access token, as demonstrated below.
 
 ```ruby
-Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :plangrade, ENV['PLANGRADE_CLIENT_ID'], ENV['PLANGRADE_CLIENT_SECRET']
+# In your redirect_uri after the user authorized access, just parse the omniauth response
+auth = request.env["omniauth.auth"]
+access_token = auth["credentials"]["token"]
+refresh_token = auth["credentials"]["refresh_token"]
+```
+
+### Using plangrade-ruby OAuth2 Client to obtain an access token
+
+This gem comes bundled with an OAuth2 wrapper that provides convenience methods for getting through the OAuth2 flow.
+
+```ruby
+# Be sure to require plangrade in any controller where you utilize plangrade-ruby
+require 'plangrade'
+
+# Begin by getting the authorization url
+plangrade_client = Plangrade::OAuth2Client.new(ENV['PLANGRADE_CLIENT_ID'], ENV['PLANGRADE_CLIENT_SECRET'])
+auth_url = plangrade_client.webserver_authorization_url(:redirect_uri => 'your_redirect_uri')
+```
+
+After the user follows the link created above and authorizes your app, they will be redirected to your `redirect_uri`, with a code in the params that you can use to obtain an access token.
+
+```ruby
+plangrade_client = Plangrade::OAuth2Client.new(ENV['PLANGRADE_CLIENT_ID'], ENV['PLANGRADE_CLIENT_SECRET'])
+response = plangrade_client.exchange_auth_code_for_token({:params => {:code => params[:code], :redirect_uri => 'your_redirect_uri'}})
+token = JSON.parse response.body
+access_token = token["access_token"]
+refresh_token = token["refresh_token"]
+```
+
+You may want to store the `access_token` since it is good for two hours. You may also want to store the `refresh_token` since it can be used to get a new `access_token` at any time, so long as the user does not revoke your app's authorization.
+
+### Using a stored `refresh_token` to obtain an access token
+
+This gem also allows you to use a `refresh_token` to obtain a new `access_token`.
+
+```ruby
+# Set up a plangrade OAuth2 client and retrieve your refresh_token
+plangrade_client = Plangrade::OAuth2Client.new(ENV['PLANGRADE_CLIENT_ID'], ENV['PLANGRADE_CLIENT_SECRET'])
+response = plangrade_client.refresh_access_token({:params => {:refresh_token => 'your_refresh_token'}})
+token = JSON.parse response.body
+access_token = token["access_token"]
+refresh_token = token["refresh_token"]
+```
+
+### Using plangrade API client to access REST endpoints
+
+You can view the current state of the client using the `Plangrade#options` method.
+
+```ruby
+require 'plangrade'
+
+Plangrade.options
+#> {:site_url=>"https://plangrade.com", :client_id=>your_client_id, :client_secret=>your_client_secret, :access_token=>current_access_token, :http_adapter=>Plangrade::Connection, :connection_options=>{:max_redirect=>5, :use_ssl=>true}}
+```
+
+To change the configuration parameters use the `configure` method. If you set your client_id and client_secret as `ENV['PLANGRADE_CLIENT_ID']` and `ENV['PLANGRADE_CLIENT_SECRET']` then this will automatically be set for you.
+
+```ruby
+Plangrade.configure do |p|
+  p.client_id = your_client_id
+  p.client_secret = your_client_secret
 end
 ```
 
-[See the example rails app for full examples](https://github.com/topherreynoso/plangrade-ruby-client) of both the server and client-side flows.
+At this point the `access_token` is nil. This will need to be set and, in the next section, we will see how to do this.
 
-## Auth Hash
+## Usage
 
-Here's an example *Auth Hash* available in `request.env['omniauth.auth']`:
+This gem offers two way to interact with plangrade's API:
+
+1. Calling methods on `Plangrade` module.
+2. Calling methods on an instance of `Plangrade::Client`.
+
+### Calling methods on the plangrade module
+
+In order for this to work, you will need to set up your `access_token`. This assumes that you already configured the client with your default options as was described above.
 
 ```ruby
-{
-  :provider => 'plangrade',
-  :uid => '1234567',
-  :info => {
-    :name => 'Compliance Man',
-    :email => 'compliance@plangrade.com',
-  },
-  :credentials => {
-    :token => 'ABCDEF...', # OAuth 2.0 access_token, which you may wish to store
-    :refresh_token => 'ABCDEF...', #OAuth 2.0 refresh_token, which you may wish to store
-    :expires_at => 1321747205, # when the access token expires (it always will)
-    :expires => true # this will always be true
-  },
-  :extra => {
-    :raw_info => {
-      :id => '1234567',
-      :name => 'Compliance Man',
-      :email => 'compliance@plangrade.com',
-    }
-  }
-}
+# Set up your access_token
+Plangrade.configure do |p|
+  p.access_token = your_access_token
+end
+
+# Get the current user
+Plangrade.current_user
 ```
 
-### How it Works
+### Calling methods on an instance of Plangrade::Client
 
-The client-side flow is supported by parsing the authorization code from the signed request which plangrade places in a cookie.
+**Note:** Use this if you wish to create multiple client instances with different `client_id`, `client_secret`, and/or `access_token`. If your application uses a single pair of `client_id` and `client_secret` credentials, you ONLY need to specify the `access_token`.
 
-When you call `/auth/plangrade/callback`, the success callback will pass the cookie back to the server. omniauth-plangrade will see this cookie and:
+```ruby
+# Create a client instance using the access_token
+plangrade = Plangrade::Client.new(:access_token => your_access_token)
+```
 
-1. parse it,
-2. extract the authorization code contained in it,
-3. and hit plangrade and obtain an access token which will get placed in the `request.env['omniauth.auth']['credentials']` hash.
+Call methods on the instance.
 
-## Token Expiry
+**User**
 
-The expiration time of the access token you obtain is 2 hours.
-The refresh_token, however, has no expiration and may be used until a user revokes your app's access.
+Current user info
+
+```ruby
+user = plangrade.current_user
+user_name = user[:name]
+```
+
+Create new user
+
+```ruby
+new_user_id = plangrade.create_user(params)
+```
+
+Update user
+
+```ruby
+updated_user = plangrade.update_user(id, params)
+```
+
+Delete user
+
+```ruby
+plangrade.delete_user(id)
+```
+
+**Companies**
+
+Create new company
+
+```ruby
+new_company_id = plangrade.create_company(params)
+```
+
+Get company info
+
+```ruby
+company = plangrade.get_company(id)
+```
+
+Get all of a user's companies
+
+```ruby
+companies = plangrade.all_companies
+```
+
+Update company
+
+```ruby
+updated_company = plangrade.update_company(id, params)
+```
+
+Delete company
+
+```ruby
+plangrade.delete_company(id)
+```
+
+**Participants**
+
+Create new participant
+
+```ruby
+new_participant_id = plangrade.create_participant(params)
+```
+
+Get participant info
+
+```ruby
+participant = plangrade.get_participant(id)
+```
+
+Get all of a company's participants
+
+```ruby
+participants = plangrade.all_participants(:company_id => id, params)
+```
+
+Update participant info
+
+```ruby
+updated_participant = plangrade.update_participant(id, params)
+```
+
+Archive participant
+
+```ruby
+archived_participant_id = plangrade.archive_participant(id)
+```
+
+Delete participant
+
+```ruby
+plangrade.delete_participant(id)
+```
+
+## Supported Ruby Versions
+
+This library aims to support and is [tested against](https://travis-ci.org/topherreynoso/plangrade-ruby) the following Ruby versions:
+
+1. Ruby 1.9.3
+2. Ruby 2.0.0
+3. Ruby 2.1.0
+4. jruby
+
+This library may inadvertently work (or seem to work) on other Ruby implementations, however, support will only be provided for the versions listed above.
 
 ## License
 
