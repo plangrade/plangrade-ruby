@@ -19,7 +19,7 @@
 
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe Plangrade::Resources::User do
+describe Plangrade::Resources::Participant do
 
   before :all do
     Plangrade.configure do |conf|
@@ -33,12 +33,12 @@ describe Plangrade::Resources::User do
 
   context 'class methods' do
 
-    subject { Plangrade::Resources::User }
+    subject { Plangrade::Resources::Participant }
 
     describe '#create' do
-      it 'creates a new user' do
-        stub_request(:post, "https://plangrade.com/api/v1/users").with(
-          :body    => { :name => "Compliance Man", :email => 'compliance@plangrade.com' },
+      it 'creates a new participant' do
+        stub_request(:post, "https://plangrade.com/api/v1/participants").with(
+          :body    => { :first_name => "Johnny", :last_name => "Compliance", :email => 'compliance@plangrade.com', :phone => "123456789", :employee_id => "0", :company_id => "1", :street1 => "1234 Fake St.", :street2 => "", :city => "Fake", :state => "UT", :zip => "12345", :dob => "1985-12-31", :ssn => "1234" },
           :headers => {
             'Accept'          => 'application/json',
             'Authorization'   => "Bearer #{Plangrade.access_token}",
@@ -48,64 +48,47 @@ describe Plangrade::Resources::User do
         ).to_return(
           :status => 201,
           :body => '',
-          :headers => { 'Location' => 'https://plangrade.com/api/v1/users/364'}
+          :headers => { 'Location' => 'https://plangrade.com/api/v1/participants/3'}
         )
-        subject.create("compliance@plangrade.com", "Compliance Man")
-      end
-    end
-
-   describe '#current_user' do
-      it "should fetch authenticated user's data" do
-        stub_request(:get, "https://plangrade.com/api/v1/me").with(
-          :headers => {
-            'Accept'          => 'application/json',
-            'Authorization'   => "Bearer #{Plangrade.access_token}",
-            'User-Agent'      => "Plangrade Ruby Gem #{Plangrade::Ruby::VERSION}"
-          }
-        ).to_return(
-          :status => 200,
-          :body => fixture('user.json'),
-          :headers => {}
-        )
-        subject.current_user
+        subject.create(1, "Johnny", "Compliance", "1234 Fake St.", "", "Fake", "UT", "12345", "1985-12-31", "1234", "compliance@plangrade.com", 123456789, 0)
       end
     end
   end
 
-  context 'new user object with id' do
+  context 'new participant object with id' do
 
     before :each do
-      Plangrade::Resources::User.identity_map.purge!
+      Plangrade::Resources::Participant.identity_map.purge!
     end
 
-    subject { Plangrade::Resources::User.new(:id => 1) }
+    subject { Plangrade::Resources::Participant.new(:id => 3) }
 
     describe "#id" do
       it 'returns id' do
-        expect(subject.id).to eq 1
+        expect(subject.id).to eq 3
       end
     end
   end
 
-  context 'hydrated user object' do
-    subject { Plangrade::Resources::User.new(MultiJson.load(fixture('user.json'), :symbolize_keys => true)) }
+  context 'hydrated participant object' do
+    subject { Plangrade::Resources::Participant.new(MultiJson.load(fixture('participant.json'), :symbolize_keys => true)) }
 
     describe "#id" do
       it 'returns id' do
-        expect(subject.id).to eq 2
+        expect(subject.id).to eq 3
       end
     end
 
     describe "#email" do
       it 'returns email address' do
-        stub_request(:get, "https://plangrade.com/api/v1/users/2").
+        stub_request(:get, "https://plangrade.com/api/v1/participants/3").
          with(:headers => {
           'Accept'=>'application/json',
           'Authorization'=>"Bearer #{Plangrade.access_token}",
           'User-Agent'=>"Plangrade Ruby Gem #{Plangrade::Ruby::VERSION}"
         }).to_return(
           :status => 200,
-          :body => fixture('user.json'),
+          :body => fixture('participant.json'),
           :headers => {}
         )
         expect(subject.email).to eq 'compliance@plangrade.com'
@@ -113,8 +96,8 @@ describe Plangrade::Resources::User do
     end
 
     describe "#delete" do
-      it 'deletes user' do
-        stub_request(:delete, "https://plangrade.com/api/v1/users/2").
+      it 'deletes participant' do
+        stub_request(:delete, "https://plangrade.com/api/v1/participants/3").
          with(:headers => {
           'Accept'=>'application/json',
           'Authorization'=>"Bearer #{Plangrade.access_token}",
@@ -128,11 +111,27 @@ describe Plangrade::Resources::User do
       end
     end
 
+    describe "#archive" do
+      it 'archive participant' do
+        stub_request(:get, "https://plangrade.com/api/v1/participants/archive?participant_id=3").
+         with(:headers => {
+          'Accept'=>'application/json',
+          'Authorization'=>"Bearer #{Plangrade.access_token}",
+          'User-Agent'=>"Plangrade Ruby Gem #{Plangrade::Ruby::VERSION}"
+        }).to_return(
+          :status => 200,
+          :body => '',
+          :headers => {}
+        )
+        expect(subject.id).to eq 3
+      end
+    end
+
     describe '#update' do
       context 'with id as an integer' do
-        it 'updates user' do
-          stub_request(:put, "https://plangrade.com/api/v1/users/2").with(
-            :body    => { :name => 'smithy' },
+        it 'updates participant' do
+          stub_request(:put, "https://plangrade.com/api/v1/participants/3").with(
+            :body    => { :first_name => 'smithy' },
             :headers => {
               'Accept'          => 'application/json',
               'Authorization'   => "Bearer #{Plangrade.access_token}",
@@ -142,9 +141,9 @@ describe Plangrade::Resources::User do
           ).to_return(
             :status => 200,
             :body => '',
-            :headers => { 'Location' => 'https://plangrade.com/api/v1/users/2'}
+            :headers => { 'Location' => 'https://plangrade.com/api/v1/participants/3'}
           )
-          subject.update!(:name => 'smithy')
+          subject.update!(:first_name => 'smithy')
         end
       end
     end

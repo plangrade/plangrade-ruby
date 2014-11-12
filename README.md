@@ -1,6 +1,8 @@
 # plangrade API Gem
 [![Gem Version](https://badge.fury.io/rb/plangrade-ruby.svg)](http://badge.fury.io/rb/plangrade-ruby)
 [![Code Climate](https://codeclimate.com/github/topherreynoso/plangrade-ruby/badges/gpa.svg)](https://codeclimate.com/github/topherreynoso/plangrade-ruby)
+[![Coverage Status](https://coveralls.io/repos/topherreynoso/plangrade-ruby/badge.png?branch=master)](https://coveralls.io/r/topherreynoso/plangrade-ruby?branch=master)
+[![Build Status](https://travis-ci.org/topherreynoso/plangrade-ruby.svg?branch=master)](https://travis-ci.org/topherreynoso/plangrade-ruby)
 
 Ruby wrapper for the plangrade API.
 
@@ -282,7 +284,6 @@ This library aims to support and is [tested against](https://travis-ci.org/tophe
 1. Ruby 1.9.3
 2. Ruby 2.0.0
 3. Ruby 2.1.0
-4. jruby
 
 This library may inadvertently work (or seem to work) on other Ruby implementations, however, support will only be provided for the versions listed above.
 
