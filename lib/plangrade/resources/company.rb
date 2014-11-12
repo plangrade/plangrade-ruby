@@ -6,10 +6,24 @@ module Plangrade
         result = api_handler.create_company(:ein => ein, :name => name)
         return nil unless result.created?
         id = result.headers[:location].split('/').last.to_i
-        new(:id => id)
+        second_result = api_handler.get_company(id)
+        return nil unless second_result.success?
+        new(second_result.body[:company])
       end
 
       attr_accessor_deffered :name, :ein, :grade
+
+      def self.get(id)
+        api_handler.get_company(id)
+        return nil unless result.success?
+        new(result.body[:company])
+      end
+
+      def self.all(params)
+        api_handler.all_companies(params)
+        return nil unless result.success?
+        new(result.body[:companies])
+      end
 
       def update!(params)
         api_handler.update_company(@id, params)

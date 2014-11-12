@@ -103,10 +103,11 @@ At this point the `access_token` is nil. This will need to be set and, in the ne
 
 ## Usage
 
-This gem offers two way to interact with plangrade's API:
+This gem offers three ways to interact with plangrade's API:
 
-1. Calling methods on `Plangrade` module.
-2. Calling methods on an instance of `Plangrade::Client`.
+1. Calling methods on `Plangrade` module. (Returns an API response)
+2. Calling methods on an instance of `Plangrade::Client`. (Returns an API response)
+3. Calling methods on the custom object models. (Returns identity mapped objects)
 
 ### Calling methods on the plangrade module
 
@@ -228,6 +229,50 @@ Delete participant
 
 ```ruby
 plangrade.delete_participant(id)
+```
+
+### Using the object models
+
+The object model is an abstraction that makes it easy to manipulate the JSON data return when accessing plangrade's API. Each model has accessor methods for all keys contained in the JSON response for a given model type.
+
+**Users**
+
+```ruby
+user_id = Plangrade::Resources::User.create(user_email_here, user_name_here)
+user = Plangrade::Resouces::User.current_user
+user.name
+user.email
+user.update!(:email => "compliance@plangrade.com")
+user.delete!
+```
+
+**Companies**
+
+```ruby
+company1 = Plangrade::Resources::Company.create(company_ein_here, company_name_here)
+company2 = Plangrade::Resources::Company.get(id)
+companies = Plangrade::Resources::Company.all
+company2.name
+company2.ein
+company2.grade
+company2.update!(:name => "plangrade, llc")
+company2.delete!
+```
+
+**Patricipants**
+```ruby
+participant1 = Plangrade::Resources::Participant.create(company_id, first_name, last_name, 
+														street1, street2, city, state, zip, 
+														dob, ssn, email, phone, employee_id)
+participant2 = Plangrade::Resources::Participant.get(id)
+participants = Plangrade::Resources::Participant.all
+participant2.first_name
+participant2.last_name
+participant2.company_id
+...
+participant2.update!(:first_name => "Johnny")
+participant2.archive!
+participant2.delete!
 ```
 
 ## Supported Ruby Versions
