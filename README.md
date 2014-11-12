@@ -1,6 +1,7 @@
 # plangrade API Gem
 [![Gem Version](https://badge.fury.io/rb/plangrade-ruby.svg)](http://badge.fury.io/rb/plangrade-ruby)
 [![Code Climate](https://codeclimate.com/github/topherreynoso/plangrade-ruby/badges/gpa.svg)](https://codeclimate.com/github/topherreynoso/plangrade-ruby)
+[![Coverage Status](https://coveralls.io/repos/topherreynoso/plangrade-ruby/badge.png?branch=master)](https://coveralls.io/r/topherreynoso/plangrade-ruby?branch=master)
 [![Build Status](https://travis-ci.org/topherreynoso/plangrade-ruby.svg?branch=master)](https://travis-ci.org/topherreynoso/plangrade-ruby)
 
 Ruby wrapper for the plangrade API.
