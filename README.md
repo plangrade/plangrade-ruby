@@ -264,9 +264,12 @@ company.delete!
 **Patricipants**
 ```ruby
 participants = Plangrade::Resources::Participant.all
+
+# The last parameter in this is optional, this shows how to add it for an employee, a dependent would just omit the last
 participant_id = Plangrade::Resources::Participant.create(company_id, first_name, last_name, 
 														  street1, street2, city, state, zip, 
-														  dob, ssn, email, phone, employee_id)
+														  dob, email, phone, employee_id, {:ssn => employee_last_four_ssn})
+
 participant = Plangrade::Resources::Participant.get(participant_id)
 participant.first_name
 participant.last_name

@@ -50,7 +50,7 @@ describe Plangrade::Resources::Participant do
           :body => '',
           :headers => { 'Location' => 'https://plangrade.com/api/v1/participants/3'}
         )
-        subject.create(1, "Johnny", "Compliance", "1234 Fake St.", "", "Fake", "UT", "12345", "1985-12-31", "1234", "compliance@plangrade.com", 123456789, 0)
+        subject.create(1, "Johnny", "Compliance", "1234 Fake St.", "", "Fake", "UT", "12345", "1985-12-31", "compliance@plangrade.com", 123456789, 0, {:ssn => "1234"})
       end
     end
   end
