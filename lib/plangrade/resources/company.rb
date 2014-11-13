@@ -18,10 +18,17 @@ module Plangrade
 
       def self.all(*opts)
         if opts && opts != nil && opts != {}
-          api_handler.all_companies(opts)
+          result = api_handler.all_companies(opts)
         else
-          api_handler.all_companies
+          result = api_handler.all_companies
         end
+        parsed_result = JSON.parse(result.body)
+        companies ||= begin
+          parsed_result.map do |company|
+            Plangrade::Resources::Company.new(:id => company["id"], :name => company["name"], :ein => company["ein"], :name => company["name"])
+          end
+        end
+        companies
       end
 
       def update!(params)
