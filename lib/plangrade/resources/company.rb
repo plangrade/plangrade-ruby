@@ -23,9 +23,10 @@ module Plangrade
           result = api_handler.all_companies
         end
         parsed_result = JSON.parse(result.body)
+        raise parsed_result.to_yaml
         companies ||= begin
           parsed_result.map do |company|
-            Plangrade::Resources::Company.new(:id => company[:id], :name => company[:name], :ein => company[:ein], :name => company[:name])
+            new(:id => company[:id], :name => company[:name], :ein => company[:ein], :name => company[:name])
           end
         end
         companies
