@@ -25,7 +25,7 @@ module Plangrade
         parsed_result = JSON.parse(result.body)
         companies ||= begin
           parsed_result.map do |company|
-            Plangrade::Resources::Company.new(:id => company["id"], :name => company["name"], :ein => company["ein"], :name => company["name"])
+            Plangrade::Resources::Company.new(:id => company[:id], :name => company[:name], :ein => company[:ein], :name => company[:name])
           end
         end
         companies
