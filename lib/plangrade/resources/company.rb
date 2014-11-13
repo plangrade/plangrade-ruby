@@ -30,7 +30,7 @@ module Plangrade
           result = api_handler.all_companies
         end
         parsed_result = JSON.parse(result)
-        raise parsed_result["companies"].to_yaml
+        companies = parsed_result["companies"]
         companies.map { |attributes| new(attributes) }
       end
 
