@@ -53,14 +53,14 @@ require 'plangrade'
 
 # Begin by getting the authorization url
 plangrade_client = Plangrade::OAuth2Client.new(ENV['PLANGRADE_CLIENT_ID'], ENV['PLANGRADE_CLIENT_SECRET'])
-auth_url = plangrade_client.webserver_authorization_url(your_redirect_uri)
+auth_url = plangrade_client.webserver_authorization_url(:redirect_uri => 'your_redirect_uri')
 ```
 
 After the user follows the link created above and authorizes your app, they will be redirected to your `redirect_uri`, with a code in the params that you can use to obtain an access token.
 
 ```ruby
 plangrade_client = Plangrade::OAuth2Client.new(ENV['PLANGRADE_CLIENT_ID'], ENV['PLANGRADE_CLIENT_SECRET'])
-response = plangrade_client.exchange_auth_code_for_token(params[:code], your_redirect_uri)
+response = plangrade_client.exchange_auth_code_for_token(:params => {:code => params[:code], :redirect_uri => 'your_redirect_uri'})
 token = JSON.parse response.body
 access_token = token["access_token"]
 refresh_token = token["refresh_token"]
@@ -75,7 +75,7 @@ This gem also allows you to use a `refresh_token` to obtain a new `access_token`
 ```ruby
 # Set up a plangrade OAuth2 client and retrieve your refresh_token
 plangrade_client = Plangrade::OAuth2Client.new(ENV['PLANGRADE_CLIENT_ID'], ENV['PLANGRADE_CLIENT_SECRET'])
-response = plangrade_client.refresh_access_token(your_refresh_token, your_redirect_uri)
+response = plangrade_client.refresh_access_token(:params => {:refresh_token => 'your_refresh_token', :redirect_uri => 'http://localhost:3000/callback'})
 token = JSON.parse response.body
 access_token = token["access_token"]
 refresh_token = token["refresh_token"]

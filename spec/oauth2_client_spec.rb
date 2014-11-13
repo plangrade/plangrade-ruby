@@ -38,9 +38,14 @@ describe Plangrade::OAuth2Client do
         "client_id" => "PRbTcg9qjgKsp4jjpm1pw",
         "redirect_uri" => "https://localhost:3000/callback",
         "response_type" =>"code",
+        "state" => "12345"
       }
 
-      auth_url = subject.webserver_authorization_url('https://localhost:3000/callback')
+      auth_url = subject.webserver_authorization_url(
+        :client_id => 'PRbTcg9qjgKsp4jjpm1pw',
+        :state => '12345',
+        :redirect_uri => 'https://localhost:3000/callback'
+      )
 
       parsed_url = Addressable::URI.parse(auth_url)
       expect(parsed_url.path).to eq '/oauth/authorize'
@@ -67,7 +72,12 @@ describe Plangrade::OAuth2Client do
           'User-Agent'     =>"Plangrade OAuth2 Client #{Plangrade::Ruby::VERSION}"
       })
 
-      subject.exchange_auth_code_for_token('MmOGL795LbIZuJJVnL49Cc', 'http://localhost:3000/callback')
+      subject.exchange_auth_code_for_token(
+        :params => {
+          :code => 'MmOGL795LbIZuJJVnL49Cc',
+          :redirect_uri => 'http://localhost:3000/callback'
+        }
+      )
     end
   end
 
@@ -88,7 +98,12 @@ describe Plangrade::OAuth2Client do
           'User-Agent'     =>"Plangrade OAuth2 Client #{Plangrade::Ruby::VERSION}"
       })
 
-      subject.refresh_access_token('MmOGL795LbIZuJJVnL49Cc', 'http://localhost:3000/callback')
+      subject.refresh_access_token(
+        :params => {
+          :refresh_token => 'MmOGL795LbIZuJJVnL49Cc',
+          :redirect_uri => 'http://localhost:3000/callback'
+        }
+      )
     end
   end
 end
