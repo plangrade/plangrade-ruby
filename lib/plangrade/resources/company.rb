@@ -29,9 +29,8 @@ module Plangrade
         else
           result = api_handler.all_companies
         end
-        raise result.to_yaml
-        companies = JSON.parse(result.body[:companies])
-        new(companies)
+        companies = JSON.parse(result.body)
+        companies.map { |attributes| new(attributes) }
       end
 
       def update!(params)
