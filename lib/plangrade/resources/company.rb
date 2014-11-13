@@ -26,7 +26,7 @@ module Plangrade
         raise parsed_result.to_yaml
         companies ||= begin
           parsed_result.map do |company|
-            new(:id => company[:id], :name => company[:name], :ein => company[:ein], :name => company[:name])
+            new(:id => company["id"], :name => company["name"], :ein => company["ein"], :grade => company["grade"])
           end
         end
         companies
