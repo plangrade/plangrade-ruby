@@ -22,7 +22,6 @@ module Plangrade
         opts ||= {}
         opts[:company_id] = company_id
         result = api_handler.all_participants(opts)
-        return nil unless result.success?
         new(result.body[:participants])
       end
 
