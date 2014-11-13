@@ -29,7 +29,7 @@ module Plangrade
         else
           result = api_handler.all_companies
         end
-        companies = JSON.parse(result.body)
+        companies = JSON.parse(result[:companies])
         companies.map { |attributes| new(attributes) }
       end
 
