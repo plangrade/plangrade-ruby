@@ -2,9 +2,12 @@ module Plangrade
   module Resources
     class User < Plangrade::Resources::Base
 
+      attr_accessor_deffered :name, :email
+
       def self.current_user
         result = api_handler.current_user
-        new(result.body)
+        parsed_result = JSON.parse(result.body)
+        new(:id => parsed_result["id"], :name => parsed_result["name"], :email => parsed_result["email"])
       end
 
       def self.create(email, name)
@@ -13,8 +16,6 @@ module Plangrade
         id = result.headers[:location].split('/').last.to_i
         new(:id => id)
       end
-
-      attr_accessor_deffered :email, :name
 
       def update!(params)
         api_handler.update_user(@id, params)
