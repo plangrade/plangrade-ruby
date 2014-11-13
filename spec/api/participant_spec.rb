@@ -73,7 +73,7 @@ describe Plangrade::Api::Participant do
   describe 'all_participants' do
     it 'makes an http request' do
       @client.should_receive(:get).with('/api/v1/participants?company_id=1')
-      @client.all_participants(:company_id => 1)
+      @client.all_participants(1)
     end
   end
 end
