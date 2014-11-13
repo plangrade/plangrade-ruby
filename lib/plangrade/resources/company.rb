@@ -29,8 +29,8 @@ module Plangrade
         else
           result = api_handler.all_companies
         end
-        parsed_result = JSON.parse(result["companies"])
-        raise parsed_result.to_yaml
+        parsed_result = JSON.parse(result)
+        raise parsed_result["companies"].to_yaml
         companies.map { |attributes| new(attributes) }
       end
 
