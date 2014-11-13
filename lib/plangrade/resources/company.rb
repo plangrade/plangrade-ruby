@@ -17,8 +17,8 @@ module Plangrade
         new(result.body[:company])
       end
 
-      def self.all(params)
-        api_handler.all_companies(params)
+      def self.all(opts={})
+        api_handler.all_companies(opts)
         return nil unless result.success?
         new(result.body[:companies])
       end

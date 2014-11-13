@@ -18,8 +18,10 @@ module Plangrade
         new(result.body[:participant])
       end
 
-      def self.all(params)
-        api_handler.all_participants(params)
+      def self.all(company_id, opts={})
+        opts ||= {}
+        opts[:company_id] = company_id
+        api_handler.all_participants(opts)
         return nil unless result.success?
         new(result.body[:participants])
       end
