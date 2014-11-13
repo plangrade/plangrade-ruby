@@ -21,8 +21,7 @@ module Plangrade
         get("/api/v1/participants/#{id}")
       end
 
-      def all_participants(opts={})
-        company_id = opts[:company_id]
+      def all_participants(company_id)
         get("/api/v1/participants?company_id=#{company_id}")
       end
     end

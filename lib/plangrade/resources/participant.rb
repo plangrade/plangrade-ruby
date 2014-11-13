@@ -25,10 +25,8 @@ module Plangrade
             :zip => parsed_result["zip"], :dob => parsed_result["dob"], :email => parsed_result["email"], :phone => parsed_result["phone"])
       end
 
-      def self.all(company_id, *opts)
-        opts ||= {}
-        opts[:company_id] = company_id
-        result = api_handler.all_participants(opts)
+      def self.all(company_id)
+        result = api_handler.all_participants(company_id)
         parsed_result = JSON.parse(result.body)
         participants ||= begin
           parsed_result.map do |participant|
