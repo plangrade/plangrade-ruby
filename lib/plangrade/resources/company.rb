@@ -1,6 +1,14 @@
 module Plangrade
   module Resources
     class Company < Plangrade::Resources::Base
+      attr_reader :id, :name, :ein, :grade
+
+      def initialize(attributes)
+        @id = attributes["id"]
+        @name = attributes["name"]
+        @ein = attributes["ein"]
+        @grade = attributes["grade"]
+      end
 
       def self.create(ein, name)
         result = api_handler.create_company(:ein => ein, :name => name)
@@ -9,8 +17,6 @@ module Plangrade
         new(:id => id)
       end
 
-      attr_accessor_deffered :name, :ein, :grade
-
       def self.get(id)
         result = api_handler.get_company(id)
         return nil unless result.success?
@@ -18,8 +24,14 @@ module Plangrade
       end
 
       def self.all(*opts)
-        result = api_handler.all_companies(opts)
-        new(result.body[:companies])
+        if opts && opts != nil && opts != {}
+          result = api_handler.all_companies(opts)
+        else
+          result = api_handler.all_companies
+        end
+        raise result.to_yaml
+        companies = JSON.parse(result.body[:companies])
+        new(companies)
       end
 
       def update!(params)
