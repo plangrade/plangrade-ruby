@@ -36,7 +36,7 @@ describe Plangrade::Api::User do
   describe 'create_user' do
     it 'makes an http request' do
       params = {:name => 'topher', :email => 'compliance@plangrade.com'}
-      @client.should_receive(:post).with('/api/v1/users', params)
+      expect(@client).to receive(:post).with('/api/v1/users', params)
       @client.create_user(params)
     end
   end
@@ -44,21 +44,21 @@ describe Plangrade::Api::User do
   describe 'update_user' do
     it 'makes an http request' do
       params = {:name => 'christopher'}
-      @client.should_receive(:put).with('/api/v1/users/1', params)
+      expect(@client).to receive(:put).with('/api/v1/users/1', params)
       @client.update_user(1, params)
     end
   end
 
   describe 'delete_user' do
     it 'makes an http request' do
-      @client.should_receive(:delete).with('/api/v1/users/1')
+      expect(@client).to receive(:delete).with('/api/v1/users/1')
       @client.delete_user(1)
     end
   end
 
   describe 'current_user' do
     it 'makes an http request' do
-      @client.should_receive(:get).with('/api/v1/me')
+      expect(@client).to receive(:get).with('/api/v1/me')
       @client.current_user
     end
   end

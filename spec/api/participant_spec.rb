@@ -36,7 +36,7 @@ describe Plangrade::Api::Participant do
   describe 'create_participant' do
     it 'makes an http request' do
       params = {:company_id => 1, :employee_id => 0, :ssn => '1234', :first_name => 'Joe', :last_name => 'Compliance', :street1 => '1234 Fake St.', :city => 'Fake', :state => 'UT', :zip => '84606', :dob => '1983-12-31', :email => 'compliance@plangrade.com', :phone => 1234567890}
-      @client.should_receive(:post).with('/api/v1/participants', params)
+      expect(@client).to receive(:post).with('/api/v1/participants', params)
       @client.create_participant(params)
     end
   end
@@ -44,35 +44,35 @@ describe Plangrade::Api::Participant do
   describe 'update_participant' do
     it 'makes an http request' do
       params = {:employee_id => 0, :first_name => 'John'}
-      @client.should_receive(:put).with('/api/v1/participants/1', params)
+      expect(@client).to receive(:put).with('/api/v1/participants/1', params)
       @client.update_participant(1, params)
     end
   end
 
   describe 'archive_participant' do
     it 'makes an http request' do
-      @client.should_receive(:get).with('/api/v1/participants/archive?participant_id=1')
+      expect(@client).to receive(:get).with('/api/v1/participants/archive?participant_id=1')
       @client.archive_participant(1)
     end
   end
 
   describe 'delete_participant' do
     it 'makes an http request' do
-      @client.should_receive(:delete).with('/api/v1/participants/1')
+      expect(@client).to receive(:delete).with('/api/v1/participants/1')
       @client.delete_participant(1)
     end
   end
 
   describe 'get_participant' do
     it 'makes an http request' do
-      @client.should_receive(:get).with('/api/v1/participants/1')
+      expect(@client).to receive(:get).with('/api/v1/participants/1')
       @client.get_participant(1)
     end
   end
 
   describe 'all_participants' do
     it 'makes an http request' do
-      @client.should_receive(:get).with('/api/v1/participants?company_id=1')
+      expect(@client).to receive(:get).with('/api/v1/participants?company_id=1')
       @client.all_participants(1)
     end
   end

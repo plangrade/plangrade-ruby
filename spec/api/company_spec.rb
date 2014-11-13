@@ -36,7 +36,7 @@ describe Plangrade::Api::Company do
   describe 'create_company' do
     it 'makes an http request' do
       params = {:name => 'plangrade, llc', :ein => '123456789'}
-      @client.should_receive(:post).with('/api/v1/companies', params)
+      expect(@client).to receive(:post).with('/api/v1/companies', params)
       @client.create_company(params)
     end
   end
@@ -44,28 +44,28 @@ describe Plangrade::Api::Company do
   describe 'update_company' do
     it 'makes an http request' do
       params = {:name => 'plangrade, inc'}
-      @client.should_receive(:put).with('/api/v1/companies/1', params)
+      expect(@client).to receive(:put).with('/api/v1/companies/1', params)
       @client.update_company(1, params)
     end
   end
 
   describe 'delete_company' do
     it 'makes an http request' do
-      @client.should_receive(:delete).with('/api/v1/companies/1')
+      expect(@client).to receive(:delete).with('/api/v1/companies/1')
       @client.delete_company(1)
     end
   end
 
   describe 'get_company' do
     it 'makes an http request' do
-      @client.should_receive(:get).with('/api/v1/companies/1')
+      expect(@client).to receive(:get).with('/api/v1/companies/1')
       @client.get_company(1)
     end
   end
 
   describe 'all_companies' do
     it 'makes an http request' do
-      @client.should_receive(:get).with('/api/v1/companies', {:page => 1, :letter => 'm'})
+      expect(@client).to receive(:get).with('/api/v1/companies', {:page => 1, :letter => 'm'})
       @client.all_companies({:page => 1, :letter => 'm'})
     end
   end

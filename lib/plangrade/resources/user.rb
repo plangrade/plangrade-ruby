@@ -4,7 +4,6 @@ module Plangrade
 
       def self.current_user
         result = api_handler.current_user
-        return nil unless result.success?
         new(result.body)
       end
 

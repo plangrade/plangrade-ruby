@@ -28,7 +28,6 @@ SimpleCov.start
 
 require 'plangrade'
 require 'rspec'
-require 'rspec/autorun'
 require 'webmock/rspec'
 
 WebMock.disable_net_connect!(:allow => 'coveralls.io')

@@ -144,12 +144,12 @@ describe Plangrade::Resources::Base do
 
         it 'should update model' do
           api_handler = double("ApiHandler")
-          api_handler.should_receive(:update_dummy_model).with(42, hash_including(
+          expect(api_handler).to receive(:update_dummy_model).with(42, hash_including(
             :name =>'john',
             :email => 'support@plangrade.com')
           ).and_return(double('Response', :success? => true, :created? => true, :body => {:id => 2}))
 
-          subject.stub(:api_handler).and_return(api_handler)
+          allow(subject).to receive_message_chain(:api_handler).and_return(api_handler)
           subject.name = 'john'
           subject.email = 'support@plangrade.com'
           subject.save
@@ -161,11 +161,11 @@ describe Plangrade::Resources::Base do
 
         it 'should do nothing' do
           api_handler = double("ApiHandler")
-          api_handler.should_receive(:create_dummy_model).with(
+          expect(api_handler).to receive(:create_dummy_model).with(
             hash_including(:name =>'jim', :email => 'compliance@plangrade.com')
           ).and_return(double('Response', :success? => true, :created? => true, :body => {:id => '2'}))
 
-          subject.stub(:api_handler).and_return(api_handler)
+          allow(subject).to receive_message_chain(:api_handler).and_return(api_handler)
           subject.save
         end
       end
@@ -175,12 +175,12 @@ describe Plangrade::Resources::Base do
 
         it 'should create model' do
           api_handler = double("ApiHandler")
-          api_handler.should_receive(:create_dummy_model).with({
+          expect(api_handler).to receive(:create_dummy_model).with({
             :name =>'john',
             :email => 'compliance@plangrade.com'
           }).and_return(double('Response', :success? => true, :created? => true, :body => {:id => 2}))
 
-          subject.stub(:api_handler).and_return(api_handler)
+          allow(subject).to receive_message_chain(:api_handler).and_return(api_handler)
           subject.name = 'john'
           subject.save
         end
