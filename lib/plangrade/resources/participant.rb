@@ -19,14 +19,25 @@ module Plangrade
 
       def self.get(id)
         result = api_handler.get_participant(id)
-        participant = result.body["participant"]
-        new(participant)
+        parsed_result = JSON.parse(result.body)
+        new(:id => parsed_result["id"], :company_id => parsed_result["company_id"], :employee_id => parsed_result["employee_id"], :first_name => parsed_result["first_name"], 
+            :last_name => parsed_result["last_name"]), :street1 => parsed_result["street1"], :street2 => parsed_result["street2"], :city => parsed_result["city"], :state => parsed_result["state"],
+            :zip => parsed_result["zip"], :dob => parsed_result["dob"], :email => parsed_result["email"], :phone => parsed_result["phone"])
       end
 
       def self.all(company_id, *opts)
         opts ||= {}
         opts[:company_id] = company_id
-        api_handler.all_participants(opts)
+        result = api_handler.all_participants(opts)
+        parsed_result = JSON.parse(result.body)
+        participants ||= begin
+          parsed_result.map do |participant|
+            new(:id => participant["id"], :company_id => participant["company_id"], :employee_id => participant["employee_id"], :first_name => participant["first_name"], 
+                :last_name => participant["last_name"]), :street1 => participant["street1"], :street2 => participant["street2"], :city => participant["city"], :state => participant["state"],
+                :zip => participant["zip"], :dob => participant["dob"], :email => participant["email"], :phone => participant["phone"])
+          end
+        end
+        participants
       end
 
       def archive!

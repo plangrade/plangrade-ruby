@@ -13,7 +13,8 @@ module Plangrade
 
       def self.get(id)
         result = api_handler.get_company(id)
-        new(result.body)
+        parsed_result = JSON.parse(result.body)
+        new(:id => parsed_result["id"], :name => parsed_result["name"], :ein => parsed_result["ein"], :grade => parsed_result["grade"])
       end
 
       def self.all(*opts)
