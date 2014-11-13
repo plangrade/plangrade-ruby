@@ -18,7 +18,7 @@ module Plangrade
         new(result.body[:participant])
       end
 
-      def self.all(company_id, opts={})
+      def self.all(company_id, *opts)
         opts ||= {}
         opts[:company_id] = company_id
         result = api_handler.all_participants(opts)
