@@ -12,13 +12,13 @@ module Plangrade
       attr_accessor_deffered :name, :ein, :grade
 
       def self.get(id)
-        api_handler.get_company(id)
+        result = api_handler.get_company(id)
         return nil unless result.success?
         new(result.body[:company])
       end
 
       def self.all(opts={})
-        api_handler.all_companies(opts)
+        result = api_handler.all_companies(opts)
         return nil unless result.success?
         new(result.body[:companies])
       end

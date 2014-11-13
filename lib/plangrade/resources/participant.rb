@@ -13,7 +13,7 @@ module Plangrade
       attr_accessor_deffered :company_id, :employee_id, :first_name, :last_name, :street1, :street2, :city, :state, :zip, :dob, :email, :phone
 
       def self.get(id)
-        api_handler.get_participant(id)
+        result = api_handler.get_participant(id)
         return nil unless result.success?
         new(result.body[:participant])
       end
@@ -21,13 +21,13 @@ module Plangrade
       def self.all(company_id, opts={})
         opts ||= {}
         opts[:company_id] = company_id
-        api_handler.all_participants(opts)
+        result = api_handler.all_participants(opts)
         return nil unless result.success?
         new(result.body[:participants])
       end
 
       def archive!
-        api_handler.archive_participant(@id)
+        result = api_handler.archive_participant(@id)
         return nil unless result.success?
         new(result.body)
       end
