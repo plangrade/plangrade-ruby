@@ -30,8 +30,8 @@ module Plangrade
     # >> https://plangrade.com/oauth/authorize/?client_id={client_id}&
     #    redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fplangrade%2Fcallback&response_type=code
     #
-    def webserver_authorization_url(opts={})
-      opts[:scope] = normalize_scope(opts[:scope]) if opts[:scope]
+    def webserver_authorization_url(redirect)
+      opts = {:redirect_uri => redirect}
       authorization_code.authorization_url(opts)
     end
 
@@ -54,12 +54,9 @@ module Plangrade
 
     #  client_id={client_id}&code=G3Y6jU3a&grant_type=authorization_code&
     #  redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fplangrade%2Fcallback&client_secret={client_secret}
-    def exchange_auth_code_for_token(opts={})
-      unless (opts[:params] && opts[:params][:code])
-        raise ArgumentError.new("You must include an authorization code as a parameter")
-      end
-      opts[:authenticate] ||= :body
-      code = opts[:params].delete(:code)
+    def exchange_auth_code_for_token(code, redirect)
+      opts = {:params => {:redirect_uri => redirect}}
+      opts[:authenticate] = :body
       authorization_code.get_token(code, opts)
     end
 
@@ -81,13 +78,10 @@ module Plangrade
 
     #  client_id={client_id}&refresh_token=G3Y6jU3a&grant_type=refresh_token&
     #  client_secret={client_secret}
-    def refresh_access_token(opts={})
-      unless (opts[:params] && opts[:params][:refresh_token])
-        raise ArgumentError.new("You must provide a refresh_token as a parameter")
-      end
+    def refresh_access_token(ref_token, redirect)
+      opts = {:params => {:redirect_uri => redirect}}
       opts[:authenticate] = :body
-      token = opts[:params].delete(:refresh_token)
-      refresh_token.get_token(token, opts)
+      refresh_token.get_token(ref_token, opts)
     end
   end
 end
