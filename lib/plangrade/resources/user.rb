@@ -5,8 +5,8 @@ module Plangrade
       attr_accessor_deffered :name, :email
 
       def self.current_user
-        result = api_handler.current_user
-        new(:id => result.body[:id].to_i, :name => result.body[:name], :email => result.body[:email])
+        result = api_handler.current_user.body
+        new(:id => result[:id], :name => result[:name], :email => result[:email])
       end
 
       def self.create(email, name)
