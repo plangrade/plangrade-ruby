@@ -7,7 +7,7 @@ module Plangrade
       def self.current_user
         result = api_handler.current_user
         parsed_result = JSON.parse(result.body)
-        new(:id => parsed_result["id"], :name => parsed_result["name"], :email => parsed_result["email"])
+        new(:id => parsed_result["id"].to_i, :name => parsed_result["name"], :email => parsed_result["email"])
       end
 
       def self.create(email, name)
