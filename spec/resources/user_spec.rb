@@ -56,7 +56,7 @@ describe Plangrade::Resources::User do
 
    describe '#current_user' do
       it "should fetch authenticated user's data" do
-        stub_request(:get, "https://plangrade.com/api/v1/me").with(
+        stub_request(:get, "https://plangrade.com/api/v1/me.json").with(
           :headers => {
             'Accept'          => 'application/json',
             'Authorization'   => "Bearer #{Plangrade.access_token}",

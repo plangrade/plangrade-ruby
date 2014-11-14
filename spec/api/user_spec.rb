@@ -58,7 +58,7 @@ describe Plangrade::Api::User do
 
   describe 'current_user' do
     it 'makes an http request' do
-      expect(@client).to receive(:get).with('/api/v1/me')
+      expect(@client).to receive(:get).with('/api/v1/me.json')
       @client.current_user
     end
   end

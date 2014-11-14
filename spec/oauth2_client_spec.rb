@@ -88,9 +88,9 @@ describe Plangrade::OAuth2Client do
         :body => {
           :grant_type    => 'refresh_token',
           :refresh_token => 'MmOGL795LbIZuJJVnL49Cc',
-          :redirect_uri  => 'http://localhost:3000/callback',
           :client_id     => 'PRbTcg9qjgKsp4jjpm1pw',
-          :client_secret => 'a2nQpcUm2Dgq1chWdAvbXGTk'
+          :client_secret => 'a2nQpcUm2Dgq1chWdAvbXGTk',
+          :redirect_uri  => 'http://localhost:3000/callback'
         },
         :headers => {
           'Accept'         =>'application/json',
@@ -98,11 +98,8 @@ describe Plangrade::OAuth2Client do
           'User-Agent'     =>"Plangrade OAuth2 Client #{Plangrade::Ruby::VERSION}"
       })
 
-      subject.refresh_access_token(
-        :params => {
-          :refresh_token => 'MmOGL795LbIZuJJVnL49Cc',
-          :redirect_uri => 'http://localhost:3000/callback'
-        }
+      subject.refresh!(
+        'MmOGL795LbIZuJJVnL49Cc', :params => {:redirect_uri => 'http://localhost:3000/callback'}
       )
     end
   end
