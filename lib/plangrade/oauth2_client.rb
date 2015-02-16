@@ -83,7 +83,7 @@ module Plangrade
     #  client_secret={client_secret}
     def refresh_access_token(opts={})
       unless (opts[:params] && opts[:params][:refresh_token])
-        raise ArgumentError.new("You must include a refresh token as a parameter")
+        raise ArgumentError.new("You must include a refresh_token as a parameter")
       end
       opts[:authenticate] ||= :body
       token = opts[:params].delete(:refresh_token)

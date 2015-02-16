@@ -98,8 +98,8 @@ describe Plangrade::OAuth2Client do
           'User-Agent'     =>"Plangrade OAuth2 Client #{Plangrade::Ruby::VERSION}"
       })
 
-      subject.refresh!(
-        'MmOGL795LbIZuJJVnL49Cc', :params => {:redirect_uri => 'http://localhost:3000/callback'}
+      subject.refresh_access_token(
+        :params => {:refresh_token => 'MmOGL795LbIZuJJVnL49Cc', :redirect_uri => 'http://localhost:3000/callback'}
       )
     end
   end
