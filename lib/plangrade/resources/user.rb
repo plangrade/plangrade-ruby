@@ -6,7 +6,7 @@ module Plangrade
 
       def self.current_user
         result = api_handler.current_user
-        new(:id => result.body[:id], :name => result.body[:name], :email => result.body[:email])
+        new(:id => result[:id], :name => result[:name], :email => result[:email])
       end
 
       def self.create(email, name)
