@@ -1,3 +1,5 @@
 require 'plangrade/api/company'
 require 'plangrade/api/participant'
 require 'plangrade/api/user'
+require 'plangrade/api/notice'
+require 'plangrade/api/activity'

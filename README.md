@@ -233,6 +233,22 @@ Delete participant
 plangrade.delete_participant(id)
 ```
 
+**Activities**
+
+Get all of a company's activities
+
+```ruby
+activities = plangrade.all_activities(:company_id => id, params)
+```
+
+**Notices**
+
+Get all of a company's notices (documents)
+
+```ruby
+notices = plangrade.all_notices(:company_id => id, params)
+```
+
 ### Using the object models
 
 The object model is an abstraction that makes it easy to manipulate the JSON data return when accessing plangrade's API. Each model has accessor methods for all keys contained in the JSON response for a given model type.
@@ -280,6 +296,16 @@ participant.archive!
 participant.delete!
 ```
 
+**Activities**
+```ruby
+activities = Plangrade::Resources::Activity.all
+```
+
+**Notices**
+```ruby
+notices = Plangrade::Resources::Notice.all
+```
+
 ## Supported Ruby Versions
 
 This library aims to support and is [tested against](https://travis-ci.org/topherreynoso/plangrade-ruby) the following Ruby versions:
@@ -292,7 +318,7 @@ This library may inadvertently work (or seem to work) on other Ruby implementati
 
 ## License
 
-Copyright (c) 2014 Christopher Reynoso
+Copyright (c) 2015 Plangrade Inc
 
 MIT License
 

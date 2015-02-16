@@ -6,11 +6,11 @@ require 'plangrade/ruby/version'
 Gem::Specification.new do |spec|
   spec.name          = "plangrade-ruby"
   spec.version       = Plangrade::Ruby::VERSION
-  spec.authors       = ["Christopher Reynoso"]
-  spec.email         = ["topherreynoso@gmail.com"]
+  spec.authors       = ["Plangrade Inc"]
+  spec.email         = ["support@plangrade.com"]
   spec.summary       = %q{plangrade API client}
   spec.description   = %q{A ruby wrapper for accessing plangrade's REST API}
-  spec.homepage      = "https://github.com/topherreynoso/plangrade-ruby"
+  spec.homepage      = "https://github.com/plangrade/plangrade-ruby"
   spec.licenses      = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

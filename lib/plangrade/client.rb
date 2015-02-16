@@ -9,6 +9,8 @@ module Plangrade
     include Plangrade::Api::User
     include Plangrade::Api::Company
     include Plangrade::Api::Participant
+    include Plangrade::Api::Notice
+    include Plangrade::Api::Activity
 
     attr_reader :site_url, :default_headers, :connection_options
 
