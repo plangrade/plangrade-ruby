@@ -53,23 +53,6 @@ describe Plangrade::Resources::User do
         subject.create("compliance@plangrade.com", "Compliance Man")
       end
     end
-
-   describe '#current_user' do
-      it "should fetch authenticated user's data" do
-        stub_request(:get, "https://plangrade.com/api/v1/me.json").with(
-          :headers => {
-            'Accept'          => 'application/json',
-            'Authorization'   => "Bearer #{Plangrade.access_token}",
-            'User-Agent'      => "Plangrade Ruby Gem #{Plangrade::Ruby::VERSION}"
-          }
-        ).to_return(
-          :status => 200,
-          :body => fixture('user.json'),
-          :headers => {}
-        )
-        subject.current_user
-      end
-    end
   end
 
   context 'new user object with id' do
