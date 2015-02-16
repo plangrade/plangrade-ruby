@@ -81,9 +81,13 @@ module Plangrade
 
     #  client_id={client_id}&refresh_token=G3Y6jU3a&grant_type=refresh_token&
     #  client_secret={client_secret}
-    def refresh!(ref_token, opts={})
-      opts[:authenticate] ||= :body
-      refresh_token.get_token(ref_token, opts)
+    def refresh_access_token(opts={})
+      unless (opts[:params] && opts[:params][:refresh_token])
+        raise ArgumentError.new("You must provide a refresh_token as a parameter")
+      end
+      opts[:authenticate] = :body
+      token = opts[:params].delete(:refresh_token)
+      refresh_token.get_token(token, opts)
     end
   end
 end
