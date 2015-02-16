@@ -1,16 +1,16 @@
 # plangrade API Gem
 [![Gem Version](https://badge.fury.io/rb/plangrade-ruby.svg)](http://badge.fury.io/rb/plangrade-ruby)
-[![Code Climate](https://codeclimate.com/github/topherreynoso/plangrade-ruby/badges/gpa.svg)](https://codeclimate.com/github/topherreynoso/plangrade-ruby)
-[![Coverage Status](https://coveralls.io/repos/topherreynoso/plangrade-ruby/badge.png?branch=master)](https://coveralls.io/r/topherreynoso/plangrade-ruby?branch=master)
-[![Build Status](https://travis-ci.org/topherreynoso/plangrade-ruby.svg?branch=master)](https://travis-ci.org/topherreynoso/plangrade-ruby)
+[![Code Climate](https://codeclimate.com/github/plangrade/plangrade-ruby/badges/gpa.svg)](https://codeclimate.com/github/plangrade/plangrade-ruby)
+[![Coverage Status](https://coveralls.io/repos/plangrade/plangrade-ruby/badge.png?branch=master)](https://coveralls.io/r/plangrade/plangrade-ruby?branch=master)
+[![Build Status](https://travis-ci.org/plangrade/plangrade-ruby.svg?branch=master)](https://travis-ci.org/plangrade/plangrade-ruby)
 
 Ruby wrapper for the plangrade API.
 
 Supports OAuth 2.0 authentication, including `refresh_token`. Read the [plangrade docs](https://docs.plangrade.com/#authentication) for more details. 
 
-Additionally, this may be used in conjunction with [omniauth-plangrade](https://github.com/topherreynoso/omniauth-plangrade) in order to facilitate authentication and obtaining a valid `access_token` and `refresh_token` pair for use with this gem to access plangrade API endpoints.
+Additionally, this may be used in conjunction with [omniauth-plangrade](https://github.com/plangrade/omniauth-plangrade) in order to facilitate authentication and obtaining a valid `access_token` and `refresh_token` pair for use with this gem to access plangrade API endpoints.
 
-See the [plangrade-ruby-client](https://github.com/topherreynoso/plangrade-ruby-client) example for implementation of both omniauth-plangrade and plangrade-ruby.
+See the [plangrade-ruby-client](https://github.com/plangrade/plangrade-ruby-client) example for implementation of both omniauth-plangrade and plangrade-ruby.
 
 This README provides only a basic overview of how to use this gem. For more information about the API endpoints, look at the [plangrade docs](https://docs.plangrade.com/#authentication).
 
@@ -34,7 +34,7 @@ Setup a plangrade client application at the [plangrade developer site](https://p
 
 ### Using omniauth-plangrade to obtain an access token
 
-You can use [omniauth-plangrade](https://github.com/topherreynoso/omniauth-plangrade) to obtain a valid access token, as demonstrated below.
+You can use [omniauth-plangrade](https://github.com/plangrade/omniauth-plangrade) to obtain a valid access token, as demonstrated below.
 
 ```ruby
 # In your redirect_uri after the user authorized access, just parse the omniauth response
@@ -308,7 +308,7 @@ notices = Plangrade::Resources::Notice.all
 
 ## Supported Ruby Versions
 
-This library aims to support and is [tested against](https://travis-ci.org/topherreynoso/plangrade-ruby) the following Ruby versions:
+This library aims to support and is [tested against](https://travis-ci.org/plangrade/plangrade-ruby) the following Ruby versions:
 
 1. Ruby 1.9.3
 2. Ruby 2.0.0
