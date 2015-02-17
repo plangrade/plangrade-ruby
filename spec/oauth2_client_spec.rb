@@ -81,7 +81,7 @@ describe Plangrade::OAuth2Client do
     end
   end
 
-  describe "#refresh_access_token" do
+  describe "#refresh" do
     it "makes a POST request to exchange a refresh token for access token" do
 
       stub_request(:post, "https://plangrade.com/oauth/token").with(
@@ -90,7 +90,6 @@ describe Plangrade::OAuth2Client do
           :refresh_token => 'MmOGL795LbIZuJJVnL49Cc',
           :client_id     => 'PRbTcg9qjgKsp4jjpm1pw',
           :client_secret => 'a2nQpcUm2Dgq1chWdAvbXGTk',
-          :redirect_uri  => 'http://localhost:3000/callback'
         },
         :headers => {
           'Accept'         =>'application/json',
@@ -98,9 +97,7 @@ describe Plangrade::OAuth2Client do
           'User-Agent'     =>"Plangrade OAuth2 Client #{Plangrade::Ruby::VERSION}"
       })
 
-      subject.refresh_access_token(
-        :params => { :refresh_token => 'MmOGL795LbIZuJJVnL49Cc', :redirect_uri => 'http://localhost:3000/callback' }
-      )
+      subject.refresh!('MmOGL795LbIZuJJVnL49Cc')
     end
   end
 end

@@ -71,9 +71,7 @@ module Plangrade
     # @opts [Hash] may include scope and other parameters
     #
     # >> client = PlangradeClient.new(config)
-    # >> client.refresh_access_token({
-    #      :refresh_token => 'asdfsadgrwerwet234523sdf',
-    #    })
+    # >> client.refresh!('asdfsadgrwerwet234523sdf')
     #
     # POST /oauth/token HTTP/1.1
     # Host: www.plangrade.com
@@ -81,12 +79,8 @@ module Plangrade
 
     #  client_id={client_id}&refresh_token=G3Y6jU3a&grant_type=refresh_token&
     #  client_secret={client_secret}
-    def refresh_access_token(opts={})
-      unless (opts[:params] && opts[:params][:refresh_token])
-        raise ArgumentError.new("You must provide a refresh_token as a parameter")
-      end
+    def refresh!(token, opts={})
       opts[:authenticate] = :body
-      token = opts[:params].delete(:refresh_token)
       refresh_token.get_token(token, opts)
     end
   end
