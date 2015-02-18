@@ -2,7 +2,7 @@ module Plangrade
   module Resources
     class Notice < Plangrade::Resources::Base
 
-      attr_accessor_deffered :name
+      attr_accessor_deffered :name, :plan_name, :link, :create_at
 
       def self.all(company_id)
         result = api_handler.all_notices(company_id)
